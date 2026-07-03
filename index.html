@@ -1,0 +1,1769 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Room Partners · Login System</title>
+    <!-- Font Awesome 6 (free) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(145deg, #f6f9fc 0%, #e3eef8 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 1.5rem;
+        }
+
+        .card {
+            max-width: 1100px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.88);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            border-radius: 2.5rem;
+            box-shadow: 0 20px 40px -12px rgba(0, 20, 40, 0.35), 0 8px 24px -6px rgba(0, 0, 0, 0.08);
+            padding: 2rem 2rem 2.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+
+        h1 {
+            font-size: 2.1rem;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            color: #0b2b3f;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+            border-bottom: 2px solid rgba(60, 130, 190, 0.2);
+            padding-bottom: 0.75rem;
+            margin-bottom: 1.8rem;
+        }
+
+        h1 i {
+            color: #2a7faa;
+            font-size: 2rem;
+        }
+
+        .room-badge {
+            background: #1f4e6f;
+            color: white;
+            font-size: 0.9rem;
+            font-weight: 500;
+            padding: 0.25rem 1rem;
+            border-radius: 40px;
+            letter-spacing: 0.3px;
+            margin-left: auto;
+            background: rgba(26, 67, 97, 0.85);
+            backdrop-filter: blur(2px);
+        }
+
+        /* Login / Account Section */
+        .account-section {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            border-radius: 2rem;
+            padding: 1.5rem 1.8rem;
+            margin-bottom: 1.8rem;
+            border: 1px solid rgba(255, 255, 255, 0.7);
+            box-shadow: 0 4px 12px rgba(0, 20, 30, 0.04);
+        }
+
+        .account-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .account-header h3 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #103247;
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+        }
+
+        .account-header h3 i {
+            color: #217296;
+        }
+
+        .login-status {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .login-status .badge {
+            padding: 0.3rem 1rem;
+            border-radius: 40px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .badge.logged-in {
+            background: #1a7a5a;
+            color: white;
+        }
+
+        .badge.logged-out {
+            background: #b34040;
+            color: white;
+        }
+
+        .btn-logout {
+            background: #b34040;
+            border: none;
+            color: white;
+            padding: 0.4rem 1.2rem;
+            border-radius: 2rem;
+            cursor: pointer;
+            font-weight: 600;
+            transition: 0.15s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-logout:hover {
+            background: #8f2e2e;
+            transform: scale(1.02);
+        }
+
+        .login-form {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: flex-end;
+            gap: 0.8rem;
+            margin-top: 1rem;
+        }
+
+        .login-form .input-group {
+            flex: 1 1 160px;
+            min-width: 130px;
+        }
+
+        .login-form .input-group label {
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            color: #1f4e6b;
+            margin-bottom: 0.2rem;
+            display: block;
+        }
+
+        .login-form .input-group input {
+            padding: 0.6rem 0.8rem;
+            border: 1px solid #c9dde9;
+            border-radius: 1.2rem;
+            font-size: 0.95rem;
+            background: white;
+            transition: 0.15s;
+            outline: none;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(2px);
+        }
+
+        .login-form .input-group input:focus {
+            border-color: #2a7faa;
+            box-shadow: 0 0 0 3px rgba(42, 127, 170, 0.15);
+            background: white;
+        }
+
+        .btn-login {
+            background: #1f5e7a;
+            border: none;
+            color: white;
+            font-weight: 600;
+            font-size: 0.95rem;
+            padding: 0.6rem 1.6rem;
+            border-radius: 2rem;
+            cursor: pointer;
+            transition: all 0.15s;
+            box-shadow: 0 4px 8px rgba(26, 67, 97, 0.15);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-login:hover {
+            background: #134459;
+            transform: scale(1.02);
+        }
+
+        .btn-login:active {
+            transform: scale(0.97);
+        }
+
+        .btn-create-account {
+            background: #2a7faa;
+            border: none;
+            color: white;
+            font-weight: 600;
+            font-size: 0.85rem;
+            padding: 0.6rem 1.2rem;
+            border-radius: 2rem;
+            cursor: pointer;
+            transition: all 0.15s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-create-account:hover {
+            background: #1d5f7a;
+            transform: scale(1.02);
+        }
+
+        .login-message {
+            margin-top: 0.5rem;
+            font-size: 0.85rem;
+            color: #b34040;
+            min-height: 1.2rem;
+        }
+
+        .login-message.success {
+            color: #1a7a5a;
+        }
+
+        /* partner grid */
+        .partner-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.8rem;
+            margin: 2rem 0 2.5rem;
+        }
+
+        .partner-item {
+            background: white;
+            border-radius: 1.8rem;
+            padding: 1.5rem 0.8rem 1.2rem;
+            box-shadow: 0 6px 16px rgba(0, 20, 30, 0.06);
+            transition: all 0.2s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            border: 1px solid rgba(200, 220, 240, 0.3);
+            position: relative;
+        }
+
+        .partner-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 16px 30px -10px rgba(20, 70, 110, 0.15);
+            border-color: #b6d4e8;
+        }
+
+        .avatar-frame {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            background: #dce9f2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 0.9rem;
+            border: 3px solid white;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.04);
+            overflow: hidden;
+            background: #eef5fa;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .avatar-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .avatar-frame .fallback-icon {
+            font-size: 3.2rem;
+            color: #2f6d8f;
+            opacity: 0.7;
+        }
+
+        .avatar-frame .upload-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.6);
+            color: white;
+            font-size: 0.6rem;
+            padding: 4px 0;
+            text-align: center;
+            opacity: 0;
+            transition: opacity 0.2s;
+            border-radius: 0 0 50% 50%;
+            backdrop-filter: blur(2px);
+        }
+
+        .avatar-frame:hover .upload-overlay {
+            opacity: 1;
+        }
+
+        .avatar-frame input[type="file"] {
+            display: none;
+        }
+
+        .partner-name {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #11324b;
+            letter-spacing: -0.3px;
+            margin-bottom: 0.15rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .partner-name .edit-name-btn {
+            background: transparent;
+            border: none;
+            color: #2a7faa;
+            cursor: pointer;
+            font-size: 0.9rem;
+            padding: 0 4px;
+            opacity: 0.4;
+            transition: opacity 0.2s;
+        }
+
+        .partner-name .edit-name-btn:hover {
+            opacity: 1;
+        }
+
+        .partner-name input {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #11324b;
+            border: 2px solid #2a7faa;
+            border-radius: 8px;
+            padding: 0 8px;
+            width: 140px;
+            text-align: center;
+            background: white;
+            outline: none;
+        }
+
+        .partner-name input:focus {
+            box-shadow: 0 0 0 3px rgba(42, 127, 170, 0.15);
+        }
+
+        .partner-amount {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #1d5b7a;
+            background: #e5f0f8;
+            padding: 0.1rem 1.2rem;
+            border-radius: 60px;
+            display: inline-block;
+            margin-top: 0.25rem;
+            letter-spacing: 0.5px;
+        }
+
+        .partner-amount i {
+            font-size: 1.2rem;
+            margin-right: 6px;
+            color: #2a7faa;
+        }
+
+        /* distribution list */
+        .distribution-section {
+            background: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            border-radius: 1.8rem;
+            padding: 1.5rem 1.2rem 0.8rem;
+            margin: 1.8rem 0 0.8rem;
+            border: 1px solid rgba(255, 255, 255, 0.7);
+        }
+
+        .distribution-header {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            margin-bottom: 0.8rem;
+            padding: 0 0.2rem;
+        }
+
+        .distribution-header h2 {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #103247;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .distribution-header h2 i {
+            color: #1f6d93;
+        }
+
+        .total-badge {
+            background: #1f4e6f;
+            color: white;
+            padding: 0.3rem 1.2rem;
+            border-radius: 40px;
+            font-size: 1rem;
+            font-weight: 500;
+            background: #1d5f7a;
+            letter-spacing: 0.3px;
+        }
+
+        .list-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.9rem 1rem;
+            border-radius: 1.5rem;
+            background: white;
+            margin-bottom: 0.7rem;
+            transition: 0.1s ease;
+            border: 1px solid rgba(200, 220, 240, 0.2);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.01);
+        }
+
+        .list-item:hover {
+            background: #f9fcff;
+            border-color: #b8d3e5;
+        }
+
+        .list-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .mini-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #d3e3ef;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            border: 2px solid white;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+            flex-shrink: 0;
+        }
+
+        .mini-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .mini-avatar .fallback-icon {
+            font-size: 1.6rem;
+            color: #1f5e7a;
+        }
+
+        .list-name {
+            font-weight: 500;
+            font-size: 1.1rem;
+            color: #12384f;
+        }
+
+        .list-amount {
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: #0b3d57;
+            background: #eaf2f9;
+            padding: 0.2rem 1.2rem;
+            border-radius: 60px;
+            letter-spacing: 0.3px;
+        }
+
+        .list-amount i {
+            margin-right: 6px;
+            font-size: 0.9rem;
+            color: #217296;
+        }
+
+        /* ----- USER INPUT SECTION (contributions) ----- */
+        .input-section {
+            margin: 1.8rem 0 1.2rem;
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            border-radius: 2rem;
+            padding: 1.5rem 1.5rem 1.2rem;
+            border: 1px solid rgba(255, 255, 255, 0.7);
+            box-shadow: 0 4px 12px rgba(0, 20, 30, 0.04);
+        }
+
+        .input-section h3 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #103247;
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .input-section h3 i {
+            color: #217296;
+        }
+
+        .input-row {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: flex-end;
+            gap: 1rem 0.8rem;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            flex: 1 1 120px;
+            min-width: 100px;
+        }
+
+        .input-group label {
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            color: #1f4e6b;
+            margin-bottom: 0.2rem;
+        }
+
+        .input-group input {
+            padding: 0.6rem 0.8rem;
+            border: 1px solid #c9dde9;
+            border-radius: 1.2rem;
+            font-size: 0.95rem;
+            background: white;
+            transition: 0.15s;
+            outline: none;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(2px);
+        }
+
+        .input-group input:focus {
+            border-color: #2a7faa;
+            box-shadow: 0 0 0 3px rgba(42, 127, 170, 0.15);
+            background: white;
+        }
+
+        .input-group input[type="number"] {
+            -moz-appearance: textfield;
+        }
+        .input-group input[type="number"]::-webkit-outer-spin-button,
+        .input-group input[type="number"]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        .btn-update {
+            background: #1f5e7a;
+            border: none;
+            color: white;
+            font-weight: 600;
+            font-size: 1rem;
+            padding: 0.6rem 1.6rem;
+            border-radius: 2rem;
+            cursor: pointer;
+            transition: all 0.15s;
+            box-shadow: 0 4px 8px rgba(26, 67, 97, 0.15);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            white-space: nowrap;
+            margin-left: auto;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-update:hover {
+            background: #134459;
+            transform: scale(1.02);
+            box-shadow: 0 6px 14px rgba(20, 60, 90, 0.25);
+        }
+
+        .btn-update:active {
+            transform: scale(0.97);
+        }
+
+        .input-hint {
+            font-size: 0.75rem;
+            color: #2b6885;
+            margin-top: 0.25rem;
+            opacity: 0.7;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .input-hint i {
+            margin-right: 3px;
+        }
+
+        /* ----- PRODUCTS SECTION ----- */
+        .products-section {
+            margin: 1.8rem 0 0.5rem;
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            border-radius: 2rem;
+            padding: 1.5rem 1.5rem 1.2rem;
+            border: 1px solid rgba(255, 255, 255, 0.7);
+            box-shadow: 0 4px 12px rgba(0, 20, 30, 0.04);
+        }
+
+        .products-section h3 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #103247;
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .products-section h3 i {
+            color: #217296;
+        }
+
+        .product-input-row {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: flex-end;
+            gap: 0.8rem;
+            margin-bottom: 1rem;
+        }
+
+        .product-input-row .input-group {
+            flex: 2 1 160px;
+            min-width: 130px;
+        }
+
+        .product-input-row .input-group.small {
+            flex: 1 1 100px;
+            min-width: 90px;
+        }
+
+        .btn-add-product {
+            background: #2a7faa;
+            border: none;
+            color: white;
+            font-weight: 600;
+            font-size: 0.95rem;
+            padding: 0.6rem 1.4rem;
+            border-radius: 2rem;
+            cursor: pointer;
+            transition: all 0.15s;
+            box-shadow: 0 4px 8px rgba(26, 67, 97, 0.12);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            white-space: nowrap;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-add-product:hover {
+            background: #1d5f7a;
+            transform: scale(1.02);
+        }
+
+        .btn-add-product:active {
+            transform: scale(0.97);
+        }
+
+        .btn-remove-product {
+            background: transparent;
+            border: none;
+            color: #b34040;
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 0 0.3rem;
+            transition: 0.1s;
+        }
+
+        .btn-remove-product:hover {
+            color: #9e2a2a;
+            transform: scale(1.2);
+        }
+
+        .product-list {
+            margin-top: 0.5rem;
+        }
+
+        .product-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.7rem 1rem;
+            background: white;
+            border-radius: 1.5rem;
+            margin-bottom: 0.6rem;
+            border: 1px solid rgba(200, 220, 240, 0.25);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.01);
+            transition: 0.1s;
+        }
+
+        .product-item:hover {
+            background: #f9fcff;
+            border-color: #b8d3e5;
+        }
+
+        .product-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .product-name {
+            font-weight: 500;
+            color: #12384f;
+            font-size: 1rem;
+        }
+
+        .product-price {
+            font-weight: 600;
+            color: #0b3d57;
+            background: #eaf2f9;
+            padding: 0.1rem 1rem;
+            border-radius: 40px;
+            font-size: 0.95rem;
+        }
+
+        .product-price i {
+            margin-right: 4px;
+            color: #217296;
+        }
+
+        .product-buyer {
+            font-size: 0.85rem;
+            color: #2a5f7a;
+            background: #e3eef8;
+            padding: 0.1rem 0.8rem;
+            border-radius: 30px;
+        }
+
+        .product-buyer i {
+            margin-right: 4px;
+            font-size: 0.75rem;
+        }
+
+        .product-actions {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .product-total-info {
+            margin-top: 1rem;
+            font-size: 0.95rem;
+            color: #103247;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid rgba(60, 130, 180, 0.1);
+            padding-top: 0.8rem;
+        }
+
+        .product-total-info span {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .product-total-info .total-products-price {
+            font-weight: 700;
+            color: #1d5b7a;
+        }
+
+        /* ===== REMAINING MONEY SECTION ===== */
+        .remaining-section {
+            margin: 1.8rem 0 0.5rem;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.8), rgba(235, 248, 255, 0.8));
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            border-radius: 2rem;
+            padding: 1.5rem 1.8rem 1.5rem;
+            border: 2px solid rgba(42, 127, 170, 0.15);
+            box-shadow: 0 4px 16px rgba(26, 67, 97, 0.06);
+        }
+
+        .remaining-section h3 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #103247;
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .remaining-section h3 i {
+            color: #217296;
+        }
+
+        .remaining-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.2rem;
+            margin-top: 0.5rem;
+        }
+
+        .remaining-card {
+            background: white;
+            border-radius: 1.4rem;
+            padding: 1rem 1.2rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+            border: 1px solid rgba(200, 220, 240, 0.2);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .remaining-card .label {
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            color: #4a7a96;
+            margin-bottom: 0.1rem;
+        }
+
+        .remaining-card .value {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #0f3a52;
+        }
+
+        .remaining-card .value.positive {
+            color: #1a7a5a;
+        }
+
+        .remaining-card .value.negative {
+            color: #b34040;
+        }
+
+        .remaining-card .value i {
+            font-size: 1.2rem;
+            margin-right: 6px;
+            color: #2a7faa;
+        }
+
+        .remaining-total {
+            background: #1f4e6f;
+            color: white;
+            border-radius: 1.4rem;
+            padding: 1rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.8rem;
+            background: linear-gradient(135deg, #1a4a66, #1d5f7a);
+        }
+
+        .remaining-total .label {
+            font-size: 1rem;
+            font-weight: 500;
+            opacity: 0.9;
+        }
+
+        .remaining-total .value {
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        .remaining-total .value i {
+            margin-right: 8px;
+        }
+
+        .footer-note {
+            margin-top: 1.6rem;
+            text-align: right;
+            font-size: 0.85rem;
+            color: #356f8b;
+            opacity: 0.7;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 12px;
+            border-top: 1px solid rgba(60, 130, 180, 0.08);
+            padding-top: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-note i {
+            margin-right: 4px;
+        }
+
+        .empty-products {
+            color: #4f7b94;
+            font-style: italic;
+            padding: 0.5rem 0.2rem;
+            opacity: 0.7;
+        }
+
+        /* responsive */
+        @media (max-width: 650px) {
+            .card {
+                padding: 1.5rem;
+            }
+            h1 {
+                font-size: 1.7rem;
+            }
+            .partner-grid {
+                gap: 1rem;
+            }
+            .list-item {
+                flex-wrap: wrap;
+                gap: 0.4rem;
+            }
+            .list-left {
+                width: 100%;
+            }
+            .list-amount {
+                margin-left: auto;
+            }
+            .input-row {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .btn-update {
+                margin-left: 0;
+                justify-content: center;
+                width: 100%;
+            }
+            .product-input-row {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .btn-add-product {
+                justify-content: center;
+                width: 100%;
+            }
+            .product-item {
+                flex-wrap: wrap;
+                gap: 0.4rem;
+            }
+            .product-actions {
+                margin-left: auto;
+            }
+            .remaining-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .remaining-total {
+                flex-direction: column;
+                text-align: center;
+            }
+            .login-form {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .btn-login,
+            .btn-create-account {
+                justify-content: center;
+            }
+            .account-header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <!-- header -->
+    <h1>
+        <i class="fas fa-people-roof"></i>
+        Room partners
+        <span class="room-badge"><i class="fas fa-door-open" style="margin-right: 6px;"></i> 3 · suite</span>
+    </h1>
+
+    <!-- ========== ACCOUNT / LOGIN SECTION ========== -->
+    <div class="account-section" id="accountSection">
+        <div class="account-header">
+            <h3><i class="fas fa-user-lock"></i> Account &amp; Login</h3>
+            <div class="login-status">
+                <span id="loginStatusBadge" class="badge logged-out"><i class="fas fa-sign-out-alt"></i> Logged Out</span>
+                <span id="loggedInUser" style="font-weight:500; color:#103247;"></span>
+                <button class="btn-logout" id="logoutBtn" style="display:none;"><i class="fas fa-sign-out-alt"></i> Logout</button>
+            </div>
+        </div>
+
+        <!-- Login Form -->
+        <div id="loginFormContainer">
+            <div class="login-form">
+                <div class="input-group">
+                    <label for="loginUserId"><i class="fas fa-user"></i> User ID</label>
+                    <input type="text" id="loginUserId" placeholder="Enter User ID" />
+                </div>
+                <div class="input-group">
+                    <label for="loginPassword"><i class="fas fa-lock"></i> Password</label>
+                    <input type="password" id="loginPassword" placeholder="Enter Password" />
+                </div>
+                <button class="btn-login" id="loginBtn"><i class="fas fa-sign-in-alt"></i> Login</button>
+                <button class="btn-create-account" id="createAccountBtn"><i class="fas fa-user-plus"></i> Create Account</button>
+            </div>
+            <div class="login-message" id="loginMessage"></div>
+        </div>
+
+        <!-- Create Account Form (hidden initially) -->
+        <div id="createAccountForm" style="display:none; margin-top:1rem; border-top:1px solid rgba(60,130,180,0.15); padding-top:1rem;">
+            <div class="login-form">
+                <div class="input-group">
+                    <label for="newUserId"><i class="fas fa-user"></i> New User ID</label>
+                    <input type="text" id="newUserId" placeholder="Choose User ID" />
+                </div>
+                <div class="input-group">
+                    <label for="newPassword"><i class="fas fa-lock"></i> New Password</label>
+                    <input type="password" id="newPassword" placeholder="Choose Password" />
+                </div>
+                <div class="input-group">
+                    <label for="newPartnerSelect"><i class="fas fa-user-friends"></i> Select Partner</label>
+                    <select id="newPartnerSelect" style="padding:0.6rem 0.8rem; border:1px solid #c9dde9; border-radius:1.2rem; font-size:0.95rem; background:white; outline:none; width:100%;">
+                        <option value="Suraj">Suraj</option>
+                        <option value="Satyam">Satyam</option>
+                        <option value="Ayush">Ayush</option>
+                    </select>
+                </div>
+                <button class="btn-login" id="createAccountSubmitBtn"><i class="fas fa-user-plus"></i> Create Account</button>
+                <button class="btn-create-account" id="cancelCreateAccountBtn" style="background:#888;"><i class="fas fa-times"></i> Cancel</button>
+            </div>
+            <div class="login-message" id="createAccountMessage"></div>
+        </div>
+    </div>
+
+    <!-- partner cards with photo & amount & editable name -->
+    <div class="partner-grid" id="partnerGrid">
+        <!-- Suraj -->
+        <div class="partner-item" data-key="suraj">
+            <div class="avatar-frame" id="avatarSuraj">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%234b7f9e'/%3E%3Ccircle cx='50' cy='35' r='20' fill='%23f0e9d8'/%3E%3Ccircle cx='38' cy='28' r='3' fill='%232b4a5c'/%3E%3Ccircle cx='62' cy='28' r='3' fill='%232b4a5c'/%3E%3Cpath d='M35 45 Q50 58 65 45' stroke='%233d2b1a' stroke-width='3' fill='none' stroke-linecap='round' /%3E%3C/svg%3E"
+                     alt="Suraj photo" id="imgSuraj">
+                <span class="fallback-icon" style="display:none;"><i class="fas fa-user-circle"></i></span>
+                <div class="upload-overlay"><i class="fas fa-camera"></i> Upload</div>
+                <input type="file" accept="image/*" class="photo-upload" data-target="suraj" />
+            </div>
+            <div class="partner-name" id="nameContainerSuraj">
+                <span id="nameDisplaySuraj">Suraj</span>
+                <button class="edit-name-btn" data-target="suraj"><i class="fas fa-pen"></i></button>
+                <input type="text" id="nameInputSuraj" value="Suraj" style="display:none;" maxlength="20" />
+            </div>
+            <div class="partner-amount" id="amountSuraj"><i class="fas fa-coins"></i> ₹ 4,200</div>
+        </div>
+
+        <!-- Satyam -->
+        <div class="partner-item" data-key="satyam">
+            <div class="avatar-frame" id="avatarSatyam">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%233d7a5a'/%3E%3Ccircle cx='50' cy='35' r='20' fill='%23f3e7d3'/%3E%3Ccircle cx='38' cy='28' r='3' fill='%231f3d2c'/%3E%3Ccircle cx='62' cy='28' r='3' fill='%231f3d2c'/%3E%3Cpath d='M35 45 Q50 58 65 45' stroke='%233d2b1a' stroke-width='3' fill='none' stroke-linecap='round' /%3E%3C/svg%3E"
+                     alt="Satyam photo" id="imgSatyam">
+                <span class="fallback-icon" style="display:none;"><i class="fas fa-user-circle"></i></span>
+                <div class="upload-overlay"><i class="fas fa-camera"></i> Upload</div>
+                <input type="file" accept="image/*" class="photo-upload" data-target="satyam" />
+            </div>
+            <div class="partner-name" id="nameContainerSatyam">
+                <span id="nameDisplaySatyam">Satyam</span>
+                <button class="edit-name-btn" data-target="satyam"><i class="fas fa-pen"></i></button>
+                <input type="text" id="nameInputSatyam" value="Satyam" style="display:none;" maxlength="20" />
+            </div>
+            <div class="partner-amount" id="amountSatyam"><i class="fas fa-coins"></i> ₹ 3,750</div>
+        </div>
+
+        <!-- Ayush -->
+        <div class="partner-item" data-key="ayush">
+            <div class="avatar-frame" id="avatarAyush">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%23a06b4a'/%3E%3Ccircle cx='50' cy='35' r='20' fill='%23f3e7d3'/%3E%3Ccircle cx='38' cy='28' r='3' fill='%233d281c'/%3E%3Ccircle cx='62' cy='28' r='3' fill='%233d281c'/%3E%3Cpath d='M35 45 Q50 58 65 45' stroke='%233d2b1a' stroke-width='3' fill='none' stroke-linecap='round' /%3E%3C/svg%3E"
+                     alt="Ayush photo" id="imgAyush">
+                <span class="fallback-icon" style="display:none;"><i class="fas fa-user-circle"></i></span>
+                <div class="upload-overlay"><i class="fas fa-camera"></i> Upload</div>
+                <input type="file" accept="image/*" class="photo-upload" data-target="ayush" />
+            </div>
+            <div class="partner-name" id="nameContainerAyush">
+                <span id="nameDisplayAyush">Ayush</span>
+                <button class="edit-name-btn" data-target="ayush"><i class="fas fa-pen"></i></button>
+                <input type="text" id="nameInputAyush" value="Ayush" style="display:none;" maxlength="20" />
+            </div>
+            <div class="partner-amount" id="amountAyush"><i class="fas fa-coins"></i> ₹ 5,100</div>
+        </div>
+    </div>
+
+    <!-- distribution list with photo + money -->
+    <div class="distribution-section">
+        <div class="distribution-header">
+            <h2><i class="fas fa-list-ul"></i> Distribution · money list</h2>
+            <span class="total-badge" id="totalBadge"><i class="fas fa-calculator"></i> total ₹ 13,050</span>
+        </div>
+
+        <div id="distributionList">
+            <!-- Suraj -->
+            <div class="list-item" id="listSuraj">
+                <div class="list-left">
+                    <div class="mini-avatar" id="miniAvatarSuraj">
+                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%234b7f9e'/%3E%3Ccircle cx='50' cy='35' r='20' fill='%23f0e9d8'/%3E%3Ccircle cx='38' cy='28' r='3' fill='%232b4a5c'/%3E%3Ccircle cx='62' cy='28' r='3' fill='%232b4a5c'/%3E%3Cpath d='M35 45 Q50 58 65 45' stroke='%233d2b1a' stroke-width='3' fill='none' stroke-linecap='round' /%3E%3C/svg%3E" alt="Suraj" id="miniImgSuraj">
+                    </div>
+                    <span class="list-name" id="listNameSuraj">Suraj</span>
+                </div>
+                <span class="list-amount" id="listAmountSuraj"><i class="fas fa-rupee-sign"></i> 4,200</span>
+            </div>
+            <!-- Satyam -->
+            <div class="list-item" id="listSatyam">
+                <div class="list-left">
+                    <div class="mini-avatar" id="miniAvatarSatyam">
+                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%233d7a5a'/%3E%3Ccircle cx='50' cy='35' r='20' fill='%23f3e7d3'/%3E%3Ccircle cx='38' cy='28' r='3' fill='%231f3d2c'/%3E%3Ccircle cx='62' cy='28' r='3' fill='%231f3d2c'/%3E%3Cpath d='M35 45 Q50 58 65 45' stroke='%233d2b1a' stroke-width='3' fill='none' stroke-linecap='round' /%3E%3C/svg%3E" alt="Satyam" id="miniImgSatyam">
+                    </div>
+                    <span class="list-name" id="listNameSatyam">Satyam</span>
+                </div>
+                <span class="list-amount" id="listAmountSatyam"><i class="fas fa-rupee-sign"></i> 3,750</span>
+            </div>
+            <!-- Ayush -->
+            <div class="list-item" id="listAyush">
+                <div class="list-left">
+                    <div class="mini-avatar" id="miniAvatarAyush">
+                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%23a06b4a'/%3E%3Ccircle cx='50' cy='35' r='20' fill='%23f3e7d3'/%3E%3Ccircle cx='38' cy='28' r='3' fill='%233d281c'/%3E%3Ccircle cx='62' cy='28' r='3' fill='%233d281c'/%3E%3Cpath d='M35 45 Q50 58 65 45' stroke='%233d2b1a' stroke-width='3' fill='none' stroke-linecap='round' /%3E%3C/svg%3E" alt="Ayush" id="miniImgAyush">
+                    </div>
+                    <span class="list-name" id="listNameAyush">Ayush</span>
+                </div>
+                <span class="list-amount" id="listAmountAyush"><i class="fas fa-rupee-sign"></i> 5,100</span>
+            </div>
+        </div>
+        <div style="padding: 0.3rem 0.6rem 0; font-size: 0.8rem; color: #3b6e89; opacity: 0.6; display: flex; gap: 6px; flex-wrap: wrap;">
+            <span><i class="fas fa-check-circle" style="color: #1c7e5a;"></i> amounts updated</span>
+            <span style="margin-left: auto;"><i class="far fa-image"></i> click photo to upload</span>
+        </div>
+    </div>
+
+    <!-- ========== USER INPUT SECTION (contributions) ========== -->
+    <div class="input-section">
+        <h3><i class="fas fa-pen-to-square"></i> Update contributions</h3>
+        <div class="input-row">
+            <div class="input-group">
+                <label for="inputSuraj"><i class="fas fa-user"></i> <span id="labelSuraj">Suraj</span></label>
+                <input type="number" id="inputSuraj" value="4200" min="0" step="100" />
+            </div>
+            <div class="input-group">
+                <label for="inputSatyam"><i class="fas fa-user"></i> <span id="labelSatyam">Satyam</span></label>
+                <input type="number" id="inputSatyam" value="3750" min="0" step="100" />
+            </div>
+            <div class="input-group">
+                <label for="inputAyush"><i class="fas fa-user"></i> <span id="labelAyush">Ayush</span></label>
+                <input type="number" id="inputAyush" value="5100" min="0" step="100" />
+            </div>
+            <button class="btn-update" id="updateBtn"><i class="fas fa-rotate-right"></i> Update</button>
+        </div>
+        <div class="input-hint">
+            <span><i class="fas fa-info-circle"></i> Enter amounts in ₹ (Indian rupees)</span>
+            <span><i class="fas fa-arrow-right"></i> Click Update to refresh cards &amp; list</span>
+        </div>
+    </div>
+
+    <!-- ========== PRODUCTS SECTION ========== -->
+    <div class="products-section">
+        <h3><i class="fas fa-shopping-bag"></i> Products bought from these funds</h3>
+
+        <div class="product-input-row">
+            <div class="input-group">
+                <label for="productNameInput"><i class="fas fa-tag"></i> Product name</label>
+                <input type="text" id="productNameInput" placeholder="e.g. Groceries" />
+            </div>
+            <div class="input-group small">
+                <label for="productPriceInput"><i class="fas fa-rupee-sign"></i> Price</label>
+                <input type="number" id="productPriceInput" placeholder="0" min="0" step="10" />
+            </div>
+            <div class="input-group small">
+                <label for="productBuyerInput"><i class="fas fa-user"></i> Buyer</label>
+                <select id="productBuyerInput">
+                    <option value="Suraj">Suraj</option>
+                    <option value="Satyam">Satyam</option>
+                    <option value="Ayush">Ayush</option>
+                </select>
+            </div>
+            <button class="btn-add-product" id="addProductBtn"><i class="fas fa-plus-circle"></i> Add</button>
+        </div>
+
+        <div class="product-list" id="productListContainer">
+            <div class="empty-products"><i class="fas fa-box-open"></i> No products added yet. Add your first purchase!</div>
+        </div>
+
+        <div class="product-total-info">
+            <span><i class="fas fa-receipt"></i> Total spent on products</span>
+            <span class="total-products-price" id="totalProductsPrice">₹ 0</span>
+        </div>
+    </div>
+
+    <!-- ========== REMAINING MONEY SECTION ========== -->
+    <div class="remaining-section" id="remainingSection">
+        <h3><i class="fas fa-coins"></i> Remaining money after purchases</h3>
+        <div class="remaining-grid" id="remainingGrid">
+            <div class="remaining-card" id="remainSuraj">
+                <span class="label" id="remainLabelSuraj"><i class="fas fa-user"></i> Suraj</span>
+                <span class="value positive" id="remainValueSuraj"><i class="fas fa-rupee-sign"></i> 4,200</span>
+            </div>
+            <div class="remaining-card" id="remainSatyam">
+                <span class="label" id="remainLabelSatyam"><i class="fas fa-user"></i> Satyam</span>
+                <span class="value positive" id="remainValueSatyam"><i class="fas fa-rupee-sign"></i> 3,750</span>
+            </div>
+            <div class="remaining-card" id="remainAyush">
+                <span class="label" id="remainLabelAyush"><i class="fas fa-user"></i> Ayush</span>
+                <span class="value positive" id="remainValueAyush"><i class="fas fa-rupee-sign"></i> 5,100</span>
+            </div>
+        </div>
+        <div class="remaining-total" id="remainingTotal">
+            <span class="label"><i class="fas fa-piggy-bank"></i> Total remaining</span>
+            <span class="value" id="totalRemainingValue"><i class="fas fa-rupee-sign"></i> 13,050</span>
+        </div>
+    </div>
+
+    <div class="footer-note">
+        <span><i class="fas fa-user-friends"></i> three partners · shared room</span>
+        <span><i class="fas fa-wallet"></i> distribution list with photo</span>
+        <span><i class="fas fa-shopping-cart"></i> product tracker</span>
+        <span><i class="fas fa-calculator"></i> remaining balance</span>
+    </div>
+</div>
+
+<script>
+    (function() {
+        // ---------- ACCOUNT SYSTEM ----------
+        // Store accounts in localStorage
+        let accounts = JSON.parse(localStorage.getItem('roomAccounts')) || {};
+        let currentUser = localStorage.getItem('currentUser') || null;
+
+        // DOM refs for login
+        const loginUserId = document.getElementById('loginUserId');
+        const loginPassword = document.getElementById('loginPassword');
+        const loginBtn = document.getElementById('loginBtn');
+        const createAccountBtn = document.getElementById('createAccountBtn');
+        const createAccountForm = document.getElementById('createAccountForm');
+        const loginFormContainer = document.getElementById('loginFormContainer');
+        const newUserId = document.getElementById('newUserId');
+        const newPassword = document.getElementById('newPassword');
+        const newPartnerSelect = document.getElementById('newPartnerSelect');
+        const createAccountSubmitBtn = document.getElementById('createAccountSubmitBtn');
+        const cancelCreateAccountBtn = document.getElementById('cancelCreateAccountBtn');
+        const loginMessage = document.getElementById('loginMessage');
+        const createAccountMessage = document.getElementById('createAccountMessage');
+        const loginStatusBadge = document.getElementById('loginStatusBadge');
+        const loggedInUser = document.getElementById('loggedInUser');
+        const logoutBtn = document.getElementById('logoutBtn');
+
+        // Update UI based on login state
+        function updateLoginUI() {
+            if (currentUser && accounts[currentUser]) {
+                const partnerName = accounts[currentUser].partner;
+                loginStatusBadge.className = 'badge logged-in';
+                loginStatusBadge.innerHTML = `<i class="fas fa-check-circle"></i> Logged In`;
+                loggedInUser.textContent = `👋 ${partnerName}`;
+                logoutBtn.style.display = 'flex';
+                loginFormContainer.style.display = 'none';
+                // Enable editing features
+                document.querySelectorAll('.edit-name-btn').forEach(b => b.style.opacity = '1');
+                document.querySelectorAll('.photo-upload').forEach(b => b.disabled = false);
+                document.querySelectorAll('.avatar-frame').forEach(f => f.style.cursor = 'pointer');
+                document.querySelectorAll('.btn-update, .btn-add-product').forEach(b => b.disabled = false);
+                loginMessage.textContent = '';
+                loginMessage.className = 'login-message';
+            } else {
+                loginStatusBadge.className = 'badge logged-out';
+                loginStatusBadge.innerHTML = `<i class="fas fa-sign-out-alt"></i> Logged Out`;
+                loggedInUser.textContent = '';
+                logoutBtn.style.display = 'none';
+                loginFormContainer.style.display = 'block';
+                createAccountForm.style.display = 'none';
+                // Disable editing features
+                document.querySelectorAll('.edit-name-btn').forEach(b => b.style.opacity = '0.3');
+                document.querySelectorAll('.photo-upload').forEach(b => b.disabled = true);
+                document.querySelectorAll('.avatar-frame').forEach(f => f.style.cursor = 'default');
+                document.querySelectorAll('.btn-update, .btn-add-product').forEach(b => b.disabled = true);
+            }
+        }
+
+        // Save accounts to localStorage
+        function saveAccounts() {
+            localStorage.setItem('roomAccounts', JSON.stringify(accounts));
+        }
+
+        // Login function
+        function login() {
+            const userId = loginUserId.value.trim();
+            const password = loginPassword.value.trim();
+
+            if (!userId || !password) {
+                loginMessage.textContent = '⚠️ Please enter both User ID and Password.';
+                loginMessage.className = 'login-message';
+                return;
+            }
+
+            if (!accounts[userId]) {
+                loginMessage.textContent = '❌ User ID not found. Please create an account first.';
+                loginMessage.className = 'login-message';
+                return;
+            }
+
+            if (accounts[userId].password !== password) {
+                loginMessage.textContent = '❌ Incorrect password. Please try again.';
+                loginMessage.className = 'login-message';
+                return;
+            }
+
+            currentUser = userId;
+            localStorage.setItem('currentUser', currentUser);
+            loginMessage.textContent = '✅ Login successful! Welcome back!';
+            loginMessage.className = 'login-message success';
+            updateLoginUI();
+        }
+
+        // Create account function
+        function createAccount() {
+            const userId = newUserId.value.trim();
+            const password = newPassword.value.trim();
+            const partner = newPartnerSelect.value;
+
+            if (!userId || !password) {
+                createAccountMessage.textContent = '⚠️ Please enter both User ID and Password.';
+                createAccountMessage.className = 'login-message';
+                return;
+            }
+
+            if (userId.length < 3) {
+                createAccountMessage.textContent = '⚠️ User ID must be at least 3 characters.';
+                createAccountMessage.className = 'login-message';
+                return;
+            }
+
+            if (password.length < 4) {
+                createAccountMessage.textContent = '⚠️ Password must be at least 4 characters.';
+                createAccountMessage.className = 'login-message';
+                return;
+            }
+
+            if (accounts[userId]) {
+                createAccountMessage.textContent = '❌ User ID already exists. Please choose another.';
+                createAccountMessage.className = 'login-message';
+                return;
+            }
+
+            accounts[userId] = {
+                password: password,
+                partner: partner
+            };
+            saveAccounts();
+
+            createAccountMessage.textContent = '✅ Account created successfully! You can now login.';
+            createAccountMessage.className = 'login-message success';
+
+            // Clear fields
+            newUserId.value = '';
+            newPassword.value = '';
+            createAccountForm.style.display = 'none';
+            loginFormContainer.style.display = 'block';
+        }
+
+        // Logout function
+        function logout() {
+            currentUser = null;
+            localStorage.removeItem('currentUser');
+            loginUserId.value = '';
+            loginPassword.value = '';
+            loginMessage.textContent = '';
+            loginMessage.className = 'login-message';
+            updateLoginUI();
+        }
+
+        // Event listeners for login
+        loginBtn.addEventListener('click', login);
+        loginPassword.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') login();
+        });
+        loginUserId.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') login();
+        });
+
+        // Create account toggle
+        createAccountBtn.addEventListener('click', () => {
+            createAccountForm.style.display = 'block';
+            createAccountMessage.textContent = '';
+            createAccountMessage.className = 'login-message';
+        });
+
+        cancelCreateAccountBtn.addEventListener('click', () => {
+            createAccountForm.style.display = 'none';
+            createAccountMessage.textContent = '';
+            createAccountMessage.className = 'login-message';
+        });
+
+        createAccountSubmitBtn.addEventListener('click', createAccount);
+        newPassword.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') createAccount();
+        });
+        newUserId.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') createAccount();
+        });
+
+        logoutBtn.addEventListener('click', logout);
+
+        // ---------- DOM refs for main app ----------
+        const inputSuraj = document.getElementById('inputSuraj');
+        const inputSatyam = document.getElementById('inputSatyam');
+        const inputAyush = document.getElementById('inputAyush');
+        const updateBtn = document.getElementById('updateBtn');
+
+        const cardSuraj = document.getElementById('amountSuraj');
+        const cardSatyam = document.getElementById('amountSatyam');
+        const cardAyush = document.getElementById('amountAyush');
+
+        const listSuraj = document.getElementById('listAmountSuraj');
+        const listSatyam = document.getElementById('listAmountSatyam');
+        const listAyush = document.getElementById('listAmountAyush');
+
+        const totalBadge = document.getElementById('totalBadge');
+
+        // Products
+        const productNameInput = document.getElementById('productNameInput');
+        const productPriceInput = document.getElementById('productPriceInput');
+        const productBuyerInput = document.getElementById('productBuyerInput');
+        const addProductBtn = document.getElementById('addProductBtn');
+        const productListContainer = document.getElementById('productListContainer');
+        const totalProductsPriceSpan = document.getElementById('totalProductsPrice');
+
+        // Remaining
+        const remainValueSuraj = document.getElementById('remainValueSuraj');
+        const remainValueSatyam = document.getElementById('remainValueSatyam');
+        const remainValueAyush = document.getElementById('remainValueAyush');
+        const totalRemainingValue = document.getElementById('totalRemainingValue');
+
+        // Name elements
+        const nameDisplaySuraj = document.getElementById('nameDisplaySuraj');
+        const nameDisplaySatyam = document.getElementById('nameDisplaySatyam');
+        const nameDisplayAyush = document.getElementById('nameDisplayAyush');
+        const nameInputSuraj = document.getElementById('nameInputSuraj');
+        const nameInputSatyam = document.getElementById('nameInputSatyam');
+        const nameInputAyush = document.getElementById('nameInputAyush');
+        const listNameSuraj = document.getElementById('listNameSuraj');
+        const listNameSatyam = document.getElementById('listNameSatyam');
+        const listNameAyush = document.getElementById('listNameAyush');
+        const labelSuraj = document.getElementById('labelSuraj');
+        const labelSatyam = document.getElementById('labelSatyam');
+        const labelAyush = document.getElementById('labelAyush');
+        const remainLabelSuraj = document.getElementById('remainLabelSuraj');
+        const remainLabelSatyam = document.getElementById('remainLabelSatyam');
+        const remainLabelAyush = document.getElementById('remainLabelAyush');
+
+        // ---------- helpers ----------
+        function formatINR(num) {
+            return num.toLocaleString('en-IN');
+        }
+
+        function getContributions() {
+            return {
+                suraj: parseInt(inputSuraj.value) || 0,
+                satyam: parseInt(inputSatyam.value) || 0,
+                ayush: parseInt(inputAyush.value) || 0
+            };
+        }
+
+        // ---------- Name editing ----------
+        function setupNameEditing(target) {
+            const display = document.getElementById(`nameDisplay${capitalize(target)}`);
+            const input = document.getElementById(`nameInput${capitalize(target)}`);
+            const btn = document.querySelector(`.edit-name-btn[data-target="${target}"]`);
+
+            btn.addEventListener('click', function() {
+                if (!currentUser) {
+                    alert('Please login first to edit names.');
+                    return;
+                }
+                display.style.display = 'none';
+                input.style.display = 'inline-block';
+                input.value = display.textContent;
+                input.focus();
+                input.select();
+            });
+
+            function saveName() {
+                const newName = input.value.trim() || display.textContent;
+                display.textContent = newName;
+                display.style.display = 'inline';
+                input.style.display = 'none';
+                updateAllNames(target, newName);
+            }
+
+            input.addEventListener('blur', saveName);
+            input.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    input.blur();
+                }
+                if (e.key === 'Escape') {
+                    input.value = display.textContent;
+                    input.blur();
+                }
+            });
+        }
+
+        function capitalize(str) {
+            return str.charAt(0).toUpperCase() + str.slice(1);
+        }
+
+        function updateAllNames(target, newName) {
+            const cap = capitalize(target);
+            document.getElementById(`listName${cap}`).textContent = newName;
+            document.getElementById(`label${cap}`).textContent = newName;
+            document.getElementById(`remainLabel${cap}`).innerHTML = `<i class="fas fa-user"></i> ${newName}`;
+            const options = document.querySelectorAll('#productBuyerInput option');
+            options.forEach(opt => {
+                if (opt.value === cap) {
+                    opt.textContent = newName;
+                }
+            });
+            renderProducts();
+        }
+
+        setupNameEditing('suraj');
+        setupNameEditing('satyam');
+        setupNameEditing('ayush');
+
+        // ---------- Photo upload ----------
+        function setupPhotoUpload(target) {
+            const fileInput = document.querySelector(`.photo-upload[data-target="${target}"]`);
+            const img = document.getElementById(`img${capitalize(target)}`);
+            const miniImg = document.getElementById(`miniImg${capitalize(target)}`);
+
+            fileInput.addEventListener('change', function(e) {
+                if (!currentUser) {
+                    alert('Please login first to upload photos.');
+                    this.value = '';
+                    return;
+                }
+                const file = e.target.files[0];
+                if (!file) return;
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    const dataUrl = event.target.result;
+                    img.src = dataUrl;
+                    miniImg.src = dataUrl;
+                    img.style.display = 'block';
+                    const fallback = img.nextElementSibling;
+                    if (fallback && fallback.classList.contains('fallback-icon')) {
+                        fallback.style.display = 'none';
+                    }
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        setupPhotoUpload('suraj');
+        setupPhotoUpload('satyam');
+        setupPhotoUpload('ayush');
+
+        // ---------- update contributions ----------
+        function updateAll() {
+            if (!currentUser) {
+                alert('Please login first to update contributions.');
+                return;
+            }
+            const valSuraj = parseInt(inputSuraj.value) || 0;
+            const valSatyam = parseInt(inputSatyam.value) || 0;
+            const valAyush = parseInt(inputAyush.value) || 0;
+
+            cardSuraj.innerHTML = `<i class="fas fa-coins"></i> ₹ ${formatINR(valSuraj)}`;
+            cardSatyam.innerHTML = `<i class="fas fa-coins"></i> ₹ ${formatINR(valSatyam)}`;
+            cardAyush.innerHTML = `<i class="fas fa-coins"></i> ₹ ${formatINR(valAyush)}`;
+
+            listSuraj.innerHTML = `<i class="fas fa-rupee-sign"></i> ${formatINR(valSuraj)}`;
+            listSatyam.innerHTML = `<i class="fas fa-rupee-sign"></i> ${formatINR(valSatyam)}`;
+            listAyush.innerHTML = `<i class="fas fa-rupee-sign"></i> ${formatINR(valAyush)}`;
+
+            const total = valSuraj + valSatyam + valAyush;
+            totalBadge.innerHTML = `<i class="fas fa-calculator"></i> total ₹ ${formatINR(total)}`;
+
+            updateRemaining();
+        }
+
+        // ---------- Products logic ----------
+        let products = [];
+
+        function getSpentByBuyer() {
+            const spent = { Suraj: 0, Satyam: 0, Ayush: 0 };
+            products.forEach(p => {
+                if (spent.hasOwnProperty(p.buyer)) {
+                    spent[p.buyer] += p.price;
+                }
+            });
+            return spent;
+        }
+
+        function renderProducts() {
+            if (products.length === 0) {
+                productListContainer.innerHTML =
+                    `<div class="empty-products"><i class="fas fa-box-open"></i> No products added yet. Add your first purchase!</div>`;
+                totalProductsPriceSpan.textContent = '₹ 0';
+                updateRemaining();
+                return;
+            }
+
+            let html = '';
+            let totalPrice = 0;
+            products.forEach((p, index) => {
+                totalPrice += p.price;
+                let buyerName = p.buyer;
+                if (p.buyer === 'Suraj') buyerName = nameDisplaySuraj.textContent;
+                else if (p.buyer === 'Satyam') buyerName = nameDisplaySatyam.textContent;
+                else if (p.buyer === 'Ayush') buyerName = nameDisplayAyush.textContent;
+
+                html += `
+                    <div class="product-item" data-index="${index}">
+                        <div class="product-info">
+                            <span class="product-name"><i class="fas fa-cube"></i> ${p.name}</span>
+                            <span class="product-price"><i class="fas fa-rupee-sign"></i> ${formatINR(p.price)}</span>
+                            <span class="product-buyer"><i class="fas fa-user"></i> ${buyerName}</span>
+                        </div>
+                        <div class="product-actions">
+                            <button class="btn-remove-product" data-index="${index}" title="Remove product"><i class="fas fa-trash-can"></i></button>
+                        </div>
+                    </div>
+                `;
+            });
+
+            productListContainer.innerHTML = html;
+            totalProductsPriceSpan.textContent = `₹ ${formatINR(totalPrice)}`;
+
+            document.querySelectorAll('.btn-remove-product').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    if (!currentUser) {
+                        alert('Please login first to remove products.');
+                        return;
+                    }
+                    const idx = parseInt(this.getAttribute('data-index'));
+                    if (!isNaN(idx)) {
+                        products.splice(idx, 1);
+                        renderProducts();
+                        updateRemaining();
+                    }
+                });
+            });
+
+            updateRemaining();
+        }
+
+        function addProduct() {
+            if (!currentUser) {
+                alert('Please login first to add products.');
+                return;
+            }
+            const name = productNameInput.value.trim();
+            const price = parseInt(productPriceInput.value) || 0;
+            const buyer = productBuyerInput.value;
+
+            if (!name) {
+                alert('Please enter a product name.');
+                return;
+            }
+            if (price <= 0) {
+                alert('Please enter a valid price (greater than 0).');
+                return;
+            }
+
+            products.push({ name, price, buyer });
+            renderProducts();
+
+            productNameInput.value = '';
+            productPriceInput.value = '';
+            productNameInput.focus();
+        }
+
+        // ---------- REMAINING LOGIC ----------
+        function updateRemaining() {
+            const contrib = getContributions();
+            const spent = getSpentByBuyer();
+
+            const remainSuraj = contrib.suraj - spent.Suraj;
+            const remainSatyam = contrib.satyam - spent.Satyam;
+            const remainAyush = contrib.ayush - spent.Ayush;
+
+            function setRemainingValue(element, amount) {
+                const isPositive = amount >= 0;
+                element.className = `value ${isPositive ? 'positive' : 'negative'}`;
+                element.innerHTML = `<i class="fas fa-rupee-sign"></i> ${formatINR(amount)}`;
+            }
+
+            setRemainingValue(remainValueSuraj, remainSuraj);
+            setRemainingValue(remainValueSatyam, remainSatyam);
+            setRemainingValue(remainValueAyush, remainAyush);
+
+            const totalRemain = remainSuraj + remainSatyam + remainAyush;
+            totalRemainingValue.innerHTML = `<i class="fas fa-rupee-sign"></i> ${formatINR(totalRemain)}`;
+            totalRemainingValue.className = `value ${totalRemain >= 0 ? 'positive' : 'negative'}`;
+            totalRemainingValue.style.color = totalRemain >= 0 ? '#ffffff' : '#ffcccc';
+        }
+
+        // ---------- event listeners ----------
+        updateBtn.addEventListener('click', updateAll);
+
+        const inputs = [inputSuraj, inputSatyam, inputAyush];
+        inputs.forEach(inp => {
+            inp.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    updateAll();
+                }
+            });
+        });
+
+        addProductBtn.addEventListener('click', addProduct);
+        productNameInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') { e.preventDefault();
+                addProduct(); } });
+        productPriceInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') { e.preventDefault();
+                addProduct(); } });
+
+        // ---------- initial sync ----------
+        function syncInputsFromDisplay() {
+            function extractNumberFromCard(cardEl) {
+                const txt = cardEl.textContent.replace(/[₹,]/g, '').trim();
+                return parseInt(txt) || 0;
+            }
+            inputSuraj.value = extractNumberFromCard(cardSuraj);
+            inputSatyam.value = extractNumberFromCard(cardSatyam);
+            inputAyush.value = extractNumberFromCard(cardAyush);
+        }
+        syncInputsFromDisplay();
+        updateAll();
+
+        // ---------- pre-populate with sample products ----------
+        products = [
+            { name: 'Groceries', price: 1200, buyer: 'Suraj' },
+            { name: 'Electricity bill', price: 850, buyer: 'Satyam' },
+            { name: 'WiFi recharge', price: 600, buyer: 'Ayush' }
+        ];
+        renderProducts();
+        updateRemaining();
+
+        // ---------- Initialize login UI ----------
+        updateLoginUI();
+
+    })();
+</script>
+</body>
+</html>

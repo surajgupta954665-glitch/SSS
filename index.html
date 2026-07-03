@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Room Partners · Login System</title>
+    <title>Room Partners · Multi-Device Sync</title>
     <!-- Font Awesome 6 (free) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
     <style>
@@ -67,7 +67,7 @@
             backdrop-filter: blur(2px);
         }
 
-        /* Login / Account Section */
+        /* Account Section */
         .account-section {
             background: rgba(255, 255, 255, 0.6);
             backdrop-filter: blur(4px);
@@ -240,6 +240,38 @@
 
         .login-message.success {
             color: #1a7a5a;
+        }
+
+        /* Sync indicator */
+        .sync-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.8rem;
+            color: #2a5f7a;
+            margin-top: 0.5rem;
+            padding: 0.3rem 0.8rem;
+            background: rgba(42, 127, 170, 0.08);
+            border-radius: 30px;
+            width: fit-content;
+        }
+
+        .sync-status i {
+            color: #2a7faa;
+        }
+
+        .sync-status .synced {
+            color: #1a7a5a;
+        }
+
+        .sync-status .syncing {
+            color: #f0a030;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
         /* partner grid */
@@ -500,7 +532,7 @@
             color: #217296;
         }
 
-        /* ----- USER INPUT SECTION (contributions) ----- */
+        /* input sections */
         .input-section {
             margin: 1.8rem 0 1.2rem;
             background: rgba(255, 255, 255, 0.6);
@@ -621,7 +653,7 @@
             margin-right: 3px;
         }
 
-        /* ----- PRODUCTS SECTION ----- */
+        /* Products */
         .products-section {
             margin: 1.8rem 0 0.5rem;
             background: rgba(255, 255, 255, 0.6);
@@ -798,7 +830,7 @@
             color: #1d5b7a;
         }
 
-        /* ===== REMAINING MONEY SECTION ===== */
+        /* Remaining */
         .remaining-section {
             margin: 1.8rem 0 0.5rem;
             background: linear-gradient(135deg, rgba(255, 255, 255, 0.8), rgba(235, 248, 255, 0.8));
@@ -925,7 +957,6 @@
             opacity: 0.7;
         }
 
-        /* responsive */
         @media (max-width: 650px) {
             .card {
                 padding: 1.5rem;
@@ -1030,7 +1061,7 @@
             <div class="login-message" id="loginMessage"></div>
         </div>
 
-        <!-- Create Account Form (hidden initially) -->
+        <!-- Create Account Form -->
         <div id="createAccountForm" style="display:none; margin-top:1rem; border-top:1px solid rgba(60,130,180,0.15); padding-top:1rem;">
             <div class="login-form">
                 <div class="input-group">
@@ -1054,15 +1085,19 @@
             </div>
             <div class="login-message" id="createAccountMessage"></div>
         </div>
+
+        <!-- Sync Status -->
+        <div class="sync-status" id="syncStatus">
+            <i class="fas fa-cloud"></i>
+            <span id="syncText">Ready</span>
+        </div>
     </div>
 
-    <!-- partner cards with photo & amount & editable name -->
+    <!-- partner cards -->
     <div class="partner-grid" id="partnerGrid">
-        <!-- Suraj -->
         <div class="partner-item" data-key="suraj">
             <div class="avatar-frame" id="avatarSuraj">
-                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%234b7f9e'/%3E%3Ccircle cx='50' cy='35' r='20' fill='%23f0e9d8'/%3E%3Ccircle cx='38' cy='28' r='3' fill='%232b4a5c'/%3E%3Ccircle cx='62' cy='28' r='3' fill='%232b4a5c'/%3E%3Cpath d='M35 45 Q50 58 65 45' stroke='%233d2b1a' stroke-width='3' fill='none' stroke-linecap='round' /%3E%3C/svg%3E"
-                     alt="Suraj photo" id="imgSuraj">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%234b7f9e'/%3E%3Ccircle cx='50' cy='35' r='20' fill='%23f0e9d8'/%3E%3Ccircle cx='38' cy='28' r='3' fill='%232b4a5c'/%3E%3Ccircle cx='62' cy='28' r='3' fill='%232b4a5c'/%3E%3Cpath d='M35 45 Q50 58 65 45' stroke='%233d2b1a' stroke-width='3' fill='none' stroke-linecap='round' /%3E%3C/svg%3E" alt="Suraj" id="imgSuraj">
                 <span class="fallback-icon" style="display:none;"><i class="fas fa-user-circle"></i></span>
                 <div class="upload-overlay"><i class="fas fa-camera"></i> Upload</div>
                 <input type="file" accept="image/*" class="photo-upload" data-target="suraj" />
@@ -1075,11 +1110,9 @@
             <div class="partner-amount" id="amountSuraj"><i class="fas fa-coins"></i> ₹ 4,200</div>
         </div>
 
-        <!-- Satyam -->
         <div class="partner-item" data-key="satyam">
             <div class="avatar-frame" id="avatarSatyam">
-                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%233d7a5a'/%3E%3Ccircle cx='50' cy='35' r='20' fill='%23f3e7d3'/%3E%3Ccircle cx='38' cy='28' r='3' fill='%231f3d2c'/%3E%3Ccircle cx='62' cy='28' r='3' fill='%231f3d2c'/%3E%3Cpath d='M35 45 Q50 58 65 45' stroke='%233d2b1a' stroke-width='3' fill='none' stroke-linecap='round' /%3E%3C/svg%3E"
-                     alt="Satyam photo" id="imgSatyam">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%233d7a5a'/%3E%3Ccircle cx='50' cy='35' r='20' fill='%23f3e7d3'/%3E%3Ccircle cx='38' cy='28' r='3' fill='%231f3d2c'/%3E%3Ccircle cx='62' cy='28' r='3' fill='%231f3d2c'/%3E%3Cpath d='M35 45 Q50 58 65 45' stroke='%233d2b1a' stroke-width='3' fill='none' stroke-linecap='round' /%3E%3C/svg%3E" alt="Satyam" id="imgSatyam">
                 <span class="fallback-icon" style="display:none;"><i class="fas fa-user-circle"></i></span>
                 <div class="upload-overlay"><i class="fas fa-camera"></i> Upload</div>
                 <input type="file" accept="image/*" class="photo-upload" data-target="satyam" />
@@ -1092,11 +1125,9 @@
             <div class="partner-amount" id="amountSatyam"><i class="fas fa-coins"></i> ₹ 3,750</div>
         </div>
 
-        <!-- Ayush -->
         <div class="partner-item" data-key="ayush">
             <div class="avatar-frame" id="avatarAyush">
-                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%23a06b4a'/%3E%3Ccircle cx='50' cy='35' r='20' fill='%23f3e7d3'/%3E%3Ccircle cx='38' cy='28' r='3' fill='%233d281c'/%3E%3Ccircle cx='62' cy='28' r='3' fill='%233d281c'/%3E%3Cpath d='M35 45 Q50 58 65 45' stroke='%233d2b1a' stroke-width='3' fill='none' stroke-linecap='round' /%3E%3C/svg%3E"
-                     alt="Ayush photo" id="imgAyush">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%23a06b4a'/%3E%3Ccircle cx='50' cy='35' r='20' fill='%23f3e7d3'/%3E%3Ccircle cx='38' cy='28' r='3' fill='%233d281c'/%3E%3Ccircle cx='62' cy='28' r='3' fill='%233d281c'/%3E%3Cpath d='M35 45 Q50 58 65 45' stroke='%233d2b1a' stroke-width='3' fill='none' stroke-linecap='round' /%3E%3C/svg%3E" alt="Ayush" id="imgAyush">
                 <span class="fallback-icon" style="display:none;"><i class="fas fa-user-circle"></i></span>
                 <div class="upload-overlay"><i class="fas fa-camera"></i> Upload</div>
                 <input type="file" accept="image/*" class="photo-upload" data-target="ayush" />
@@ -1110,7 +1141,7 @@
         </div>
     </div>
 
-    <!-- distribution list with photo + money -->
+    <!-- distribution list -->
     <div class="distribution-section">
         <div class="distribution-header">
             <h2><i class="fas fa-list-ul"></i> Distribution · money list</h2>
@@ -1118,7 +1149,6 @@
         </div>
 
         <div id="distributionList">
-            <!-- Suraj -->
             <div class="list-item" id="listSuraj">
                 <div class="list-left">
                     <div class="mini-avatar" id="miniAvatarSuraj">
@@ -1128,7 +1158,6 @@
                 </div>
                 <span class="list-amount" id="listAmountSuraj"><i class="fas fa-rupee-sign"></i> 4,200</span>
             </div>
-            <!-- Satyam -->
             <div class="list-item" id="listSatyam">
                 <div class="list-left">
                     <div class="mini-avatar" id="miniAvatarSatyam">
@@ -1138,7 +1167,6 @@
                 </div>
                 <span class="list-amount" id="listAmountSatyam"><i class="fas fa-rupee-sign"></i> 3,750</span>
             </div>
-            <!-- Ayush -->
             <div class="list-item" id="listAyush">
                 <div class="list-left">
                     <div class="mini-avatar" id="miniAvatarAyush">
@@ -1155,7 +1183,7 @@
         </div>
     </div>
 
-    <!-- ========== USER INPUT SECTION (contributions) ========== -->
+    <!-- contributions input -->
     <div class="input-section">
         <h3><i class="fas fa-pen-to-square"></i> Update contributions</h3>
         <div class="input-row">
@@ -1179,7 +1207,7 @@
         </div>
     </div>
 
-    <!-- ========== PRODUCTS SECTION ========== -->
+    <!-- Products -->
     <div class="products-section">
         <h3><i class="fas fa-shopping-bag"></i> Products bought from these funds</h3>
 
@@ -1204,7 +1232,7 @@
         </div>
 
         <div class="product-list" id="productListContainer">
-            <div class="empty-products"><i class="fas fa-box-open"></i> No products added yet. Add your first purchase!</div>
+            <div class="empty-products"><i class="fas fa-box-open"></i> No products added yet.</div>
         </div>
 
         <div class="product-total-info">
@@ -1213,7 +1241,7 @@
         </div>
     </div>
 
-    <!-- ========== REMAINING MONEY SECTION ========== -->
+    <!-- Remaining -->
     <div class="remaining-section" id="remainingSection">
         <h3><i class="fas fa-coins"></i> Remaining money after purchases</h3>
         <div class="remaining-grid" id="remainingGrid">
@@ -1241,15 +1269,20 @@
         <span><i class="fas fa-wallet"></i> distribution list with photo</span>
         <span><i class="fas fa-shopping-cart"></i> product tracker</span>
         <span><i class="fas fa-calculator"></i> remaining balance</span>
+        <span><i class="fas fa-cloud"></i> multi-device sync</span>
     </div>
 </div>
 
 <script>
     (function() {
-        // ---------- ACCOUNT SYSTEM ----------
-        // Store accounts in localStorage
-        let accounts = JSON.parse(localStorage.getItem('roomAccounts')) || {};
+        // ============================================================
+        // MULTI-DEVICE SYNC using localStorage with versioning
+        // All users share the same data - any edit by any member syncs
+        // ============================================================
+
+        const STORAGE_KEY = 'roomData_v3';
         let currentUser = localStorage.getItem('currentUser') || null;
+        let accounts = JSON.parse(localStorage.getItem('roomAccounts_v3')) || {};
 
         // DOM refs for login
         const loginUserId = document.getElementById('loginUserId');
@@ -1268,23 +1301,329 @@
         const loginStatusBadge = document.getElementById('loginStatusBadge');
         const loggedInUser = document.getElementById('loggedInUser');
         const logoutBtn = document.getElementById('logoutBtn');
+        const syncText = document.getElementById('syncText');
 
-        // Update UI based on login state
+        // DOM refs for main app
+        const inputSuraj = document.getElementById('inputSuraj');
+        const inputSatyam = document.getElementById('inputSatyam');
+        const inputAyush = document.getElementById('inputAyush');
+        const updateBtn = document.getElementById('updateBtn');
+
+        const cardSuraj = document.getElementById('amountSuraj');
+        const cardSatyam = document.getElementById('amountSatyam');
+        const cardAyush = document.getElementById('amountAyush');
+
+        const listSuraj = document.getElementById('listAmountSuraj');
+        const listSatyam = document.getElementById('listAmountSatyam');
+        const listAyush = document.getElementById('listAmountAyush');
+
+        const totalBadge = document.getElementById('totalBadge');
+
+        const productNameInput = document.getElementById('productNameInput');
+        const productPriceInput = document.getElementById('productPriceInput');
+        const productBuyerInput = document.getElementById('productBuyerInput');
+        const addProductBtn = document.getElementById('addProductBtn');
+        const productListContainer = document.getElementById('productListContainer');
+        const totalProductsPriceSpan = document.getElementById('totalProductsPrice');
+
+        const remainValueSuraj = document.getElementById('remainValueSuraj');
+        const remainValueSatyam = document.getElementById('remainValueSatyam');
+        const remainValueAyush = document.getElementById('remainValueAyush');
+        const totalRemainingValue = document.getElementById('totalRemainingValue');
+
+        const nameDisplaySuraj = document.getElementById('nameDisplaySuraj');
+        const nameDisplaySatyam = document.getElementById('nameDisplaySatyam');
+        const nameDisplayAyush = document.getElementById('nameDisplayAyush');
+        const nameInputSuraj = document.getElementById('nameInputSuraj');
+        const nameInputSatyam = document.getElementById('nameInputSatyam');
+        const nameInputAyush = document.getElementById('nameInputAyush');
+        const listNameSuraj = document.getElementById('listNameSuraj');
+        const listNameSatyam = document.getElementById('listNameSatyam');
+        const listNameAyush = document.getElementById('listNameAyush');
+        const labelSuraj = document.getElementById('labelSuraj');
+        const labelSatyam = document.getElementById('labelSatyam');
+        const labelAyush = document.getElementById('labelAyush');
+        const remainLabelSuraj = document.getElementById('remainLabelSuraj');
+        const remainLabelSatyam = document.getElementById('remainLabelSatyam');
+        const remainLabelAyush = document.getElementById('remainLabelAyush');
+
+        const imgSuraj = document.getElementById('imgSuraj');
+        const imgSatyam = document.getElementById('imgSatyam');
+        const imgAyush = document.getElementById('imgAyush');
+        const miniImgSuraj = document.getElementById('miniImgSuraj');
+        const miniImgSatyam = document.getElementById('miniImgSatyam');
+        const miniImgAyush = document.getElementById('miniImgAyush');
+
+        // ---------- Shared Data ----------
+        let sharedData = {
+            contributions: { suraj: 4200, satyam: 3750, ayush: 5100 },
+            names: { suraj: 'Suraj', satyam: 'Satyam', ayush: 'Ayush' },
+            products: [
+                { name: 'Groceries', price: 1200, buyer: 'Suraj' },
+                { name: 'Electricity bill', price: 850, buyer: 'Satyam' },
+                { name: 'WiFi recharge', price: 600, buyer: 'Ayush' }
+            ],
+            photos: {}
+        };
+
+        let lastSyncData = JSON.stringify(sharedData);
+        let syncTimeout = null;
+
+        // ---------- Load/Save shared data ----------
+        function loadSharedData() {
+            const stored = localStorage.getItem(STORAGE_KEY);
+            if (stored) {
+                try {
+                    const parsed = JSON.parse(stored);
+                    // Merge with defaults
+                    sharedData.contributions = parsed.contributions || sharedData.contributions;
+                    sharedData.names = parsed.names || sharedData.names;
+                    sharedData.products = parsed.products || sharedData.products;
+                    sharedData.photos = parsed.photos || {};
+                    lastSyncData = JSON.stringify(sharedData);
+                    return true;
+                } catch (e) {
+                    console.warn('Failed to parse stored data, using defaults');
+                }
+            }
+            return false;
+        }
+
+        function saveSharedData() {
+            const dataStr = JSON.stringify(sharedData);
+            if (dataStr !== lastSyncData) {
+                localStorage.setItem(STORAGE_KEY, dataStr);
+                lastSyncData = dataStr;
+                updateSyncStatus('synced');
+                // Also save to each user's account for backup
+                Object.keys(accounts).forEach(userId => {
+                    if (accounts[userId]) {
+                        accounts[userId].data = JSON.parse(dataStr);
+                    }
+                });
+                localStorage.setItem('roomAccounts_v3', JSON.stringify(accounts));
+            }
+        }
+
+        // ---------- Sync status ----------
+        function updateSyncStatus(status) {
+            const icon = document.querySelector('#syncStatus i');
+            const text = document.getElementById('syncText');
+            if (status === 'synced') {
+                icon.className = 'fas fa-cloud synced';
+                text.textContent = 'Synced ✓';
+            } else if (status === 'syncing') {
+                icon.className = 'fas fa-cloud-upload-alt syncing';
+                text.textContent = 'Syncing...';
+            } else {
+                icon.className = 'fas fa-cloud';
+                text.textContent = 'Ready';
+            }
+        }
+
+        // ---------- Debounced save ----------
+        function scheduleSync() {
+            if (syncTimeout) clearTimeout(syncTimeout);
+            updateSyncStatus('syncing');
+            syncTimeout = setTimeout(() => {
+                saveSharedData();
+                syncTimeout = null;
+            }, 300);
+        }
+
+        // ---------- Apply shared data to UI ----------
+        function applySharedData() {
+            // Contributions
+            inputSuraj.value = sharedData.contributions.suraj;
+            inputSatyam.value = sharedData.contributions.satyam;
+            inputAyush.value = sharedData.contributions.ayush;
+
+            // Names
+            nameDisplaySuraj.textContent = sharedData.names.suraj;
+            nameDisplaySatyam.textContent = sharedData.names.satyam;
+            nameDisplayAyush.textContent = sharedData.names.ayush;
+            updateAllNameRefs('suraj', sharedData.names.suraj);
+            updateAllNameRefs('satyam', sharedData.names.satyam);
+            updateAllNameRefs('ayush', sharedData.names.ayush);
+
+            // Photos
+            if (sharedData.photos.suraj && !sharedData.photos.suraj.includes('svg')) {
+                imgSuraj.src = sharedData.photos.suraj;
+                miniImgSuraj.src = sharedData.photos.suraj;
+            }
+            if (sharedData.photos.satyam && !sharedData.photos.satyam.includes('svg')) {
+                imgSatyam.src = sharedData.photos.satyam;
+                miniImgSatyam.src = sharedData.photos.satyam;
+            }
+            if (sharedData.photos.ayush && !sharedData.photos.ayush.includes('svg')) {
+                imgAyush.src = sharedData.photos.ayush;
+                miniImgAyush.src = sharedData.photos.ayush;
+            }
+
+            // Products
+            refreshUI();
+            updateSyncStatus('synced');
+        }
+
+        // ---------- Update all name references ----------
+        function updateAllNameRefs(target, newName) {
+            const cap = target.charAt(0).toUpperCase() + target.slice(1);
+            const listName = document.getElementById(`listName${cap}`);
+            const label = document.getElementById(`label${cap}`);
+            const remainLabel = document.getElementById(`remainLabel${cap}`);
+            if (listName) listName.textContent = newName;
+            if (label) label.textContent = newName;
+            if (remainLabel) remainLabel.innerHTML = `<i class="fas fa-user"></i> ${newName}`;
+
+            const options = document.querySelectorAll('#productBuyerInput option');
+            options.forEach(opt => {
+                if (opt.value === cap) {
+                    opt.textContent = newName;
+                }
+            });
+        }
+
+        // ---------- UI Refresh ----------
+        function formatINR(num) {
+            return num.toLocaleString('en-IN');
+        }
+
+        function getContributions() {
+            return {
+                suraj: parseInt(inputSuraj.value) || 0,
+                satyam: parseInt(inputSatyam.value) || 0,
+                ayush: parseInt(inputAyush.value) || 0
+            };
+        }
+
+        function renderProducts() {
+            if (sharedData.products.length === 0) {
+                productListContainer.innerHTML =
+                    `<div class="empty-products"><i class="fas fa-box-open"></i> No products added yet.</div>`;
+                totalProductsPriceSpan.textContent = '₹ 0';
+                updateRemaining();
+                return;
+            }
+
+            let html = '';
+            let totalPrice = 0;
+            sharedData.products.forEach((p, index) => {
+                totalPrice += p.price;
+                let buyerName = p.buyer;
+                if (p.buyer === 'Suraj') buyerName = sharedData.names.suraj;
+                else if (p.buyer === 'Satyam') buyerName = sharedData.names.satyam;
+                else if (p.buyer === 'Ayush') buyerName = sharedData.names.ayush;
+
+                html += `
+                    <div class="product-item" data-index="${index}">
+                        <div class="product-info">
+                            <span class="product-name"><i class="fas fa-cube"></i> ${p.name}</span>
+                            <span class="product-price"><i class="fas fa-rupee-sign"></i> ${formatINR(p.price)}</span>
+                            <span class="product-buyer"><i class="fas fa-user"></i> ${buyerName}</span>
+                        </div>
+                        <div class="product-actions">
+                            <button class="btn-remove-product" data-index="${index}" title="Remove product"><i class="fas fa-trash-can"></i></button>
+                        </div>
+                    </div>
+                `;
+            });
+
+            productListContainer.innerHTML = html;
+            totalProductsPriceSpan.textContent = `₹ ${formatINR(totalPrice)}`;
+
+            document.querySelectorAll('.btn-remove-product').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    if (!currentUser) {
+                        alert('Please login first to remove products.');
+                        return;
+                    }
+                    const idx = parseInt(this.getAttribute('data-index'));
+                    if (!isNaN(idx)) {
+                        sharedData.products.splice(idx, 1);
+                        refreshUI();
+                        scheduleSync();
+                    }
+                });
+            });
+
+            updateRemaining();
+        }
+
+        function updateRemaining() {
+            const contrib = getContributions();
+            const spent = getSpentByBuyer();
+
+            const remainSuraj = contrib.suraj - spent.Suraj;
+            const remainSatyam = contrib.satyam - spent.Satyam;
+            const remainAyush = contrib.ayush - spent.Ayush;
+
+            function setRemainingValue(element, amount) {
+                const isPositive = amount >= 0;
+                element.className = `value ${isPositive ? 'positive' : 'negative'}`;
+                element.innerHTML = `<i class="fas fa-rupee-sign"></i> ${formatINR(amount)}`;
+            }
+
+            setRemainingValue(remainValueSuraj, remainSuraj);
+            setRemainingValue(remainValueSatyam, remainSatyam);
+            setRemainingValue(remainValueAyush, remainAyush);
+
+            const totalRemain = remainSuraj + remainSatyam + remainAyush;
+            totalRemainingValue.innerHTML = `<i class="fas fa-rupee-sign"></i> ${formatINR(totalRemain)}`;
+            totalRemainingValue.className = `value ${totalRemain >= 0 ? 'positive' : 'negative'}`;
+            totalRemainingValue.style.color = totalRemain >= 0 ? '#ffffff' : '#ffcccc';
+        }
+
+        function getSpentByBuyer() {
+            const spent = { Suraj: 0, Satyam: 0, Ayush: 0 };
+            sharedData.products.forEach(p => {
+                if (spent.hasOwnProperty(p.buyer)) {
+                    spent[p.buyer] += p.price;
+                }
+            });
+            return spent;
+        }
+
+        function refreshUI() {
+            const valSuraj = parseInt(inputSuraj.value) || 0;
+            const valSatyam = parseInt(inputSatyam.value) || 0;
+            const valAyush = parseInt(inputAyush.value) || 0;
+
+            cardSuraj.innerHTML = `<i class="fas fa-coins"></i> ₹ ${formatINR(valSuraj)}`;
+            cardSatyam.innerHTML = `<i class="fas fa-coins"></i> ₹ ${formatINR(valSatyam)}`;
+            cardAyush.innerHTML = `<i class="fas fa-coins"></i> ₹ ${formatINR(valAyush)}`;
+
+            listSuraj.innerHTML = `<i class="fas fa-rupee-sign"></i> ${formatINR(valSuraj)}`;
+            listSatyam.innerHTML = `<i class="fas fa-rupee-sign"></i> ${formatINR(valSatyam)}`;
+            listAyush.innerHTML = `<i class="fas fa-rupee-sign"></i> ${formatINR(valAyush)}`;
+
+            const total = valSuraj + valSatyam + valAyush;
+            totalBadge.innerHTML = `<i class="fas fa-calculator"></i> total ₹ ${formatINR(total)}`;
+
+            renderProducts();
+            updateRemaining();
+        }
+
+        // ---------- Login / Account ----------
         function updateLoginUI() {
             if (currentUser && accounts[currentUser]) {
-                const partnerName = accounts[currentUser].partner;
+                const partnerName = accounts[currentUser].partner || 'Unknown';
                 loginStatusBadge.className = 'badge logged-in';
                 loginStatusBadge.innerHTML = `<i class="fas fa-check-circle"></i> Logged In`;
                 loggedInUser.textContent = `👋 ${partnerName}`;
                 logoutBtn.style.display = 'flex';
                 loginFormContainer.style.display = 'none';
-                // Enable editing features
+                createAccountForm.style.display = 'none';
+
                 document.querySelectorAll('.edit-name-btn').forEach(b => b.style.opacity = '1');
                 document.querySelectorAll('.photo-upload').forEach(b => b.disabled = false);
                 document.querySelectorAll('.avatar-frame').forEach(f => f.style.cursor = 'pointer');
                 document.querySelectorAll('.btn-update, .btn-add-product').forEach(b => b.disabled = false);
                 loginMessage.textContent = '';
                 loginMessage.className = 'login-message';
+
+                // Load shared data
+                loadSharedData();
+                applySharedData();
             } else {
                 loginStatusBadge.className = 'badge logged-out';
                 loginStatusBadge.innerHTML = `<i class="fas fa-sign-out-alt"></i> Logged Out`;
@@ -1292,7 +1631,7 @@
                 logoutBtn.style.display = 'none';
                 loginFormContainer.style.display = 'block';
                 createAccountForm.style.display = 'none';
-                // Disable editing features
+
                 document.querySelectorAll('.edit-name-btn').forEach(b => b.style.opacity = '0.3');
                 document.querySelectorAll('.photo-upload').forEach(b => b.disabled = true);
                 document.querySelectorAll('.avatar-frame').forEach(f => f.style.cursor = 'default');
@@ -1300,12 +1639,6 @@
             }
         }
 
-        // Save accounts to localStorage
-        function saveAccounts() {
-            localStorage.setItem('roomAccounts', JSON.stringify(accounts));
-        }
-
-        // Login function
         function login() {
             const userId = loginUserId.value.trim();
             const password = loginPassword.value.trim();
@@ -1323,19 +1656,18 @@
             }
 
             if (accounts[userId].password !== password) {
-                loginMessage.textContent = '❌ Incorrect password. Please try again.';
+                loginMessage.textContent = '❌ Incorrect password.';
                 loginMessage.className = 'login-message';
                 return;
             }
 
             currentUser = userId;
             localStorage.setItem('currentUser', currentUser);
-            loginMessage.textContent = '✅ Login successful! Welcome back!';
+            loginMessage.textContent = '✅ Login successful! Loading shared data...';
             loginMessage.className = 'login-message success';
             updateLoginUI();
         }
 
-        // Create account function
         function createAccount() {
             const userId = newUserId.value.trim();
             const password = newPassword.value.trim();
@@ -1360,29 +1692,33 @@
             }
 
             if (accounts[userId]) {
-                createAccountMessage.textContent = '❌ User ID already exists. Please choose another.';
+                createAccountMessage.textContent = '❌ User ID already exists.';
                 createAccountMessage.className = 'login-message';
                 return;
             }
 
+            // Create account with reference to shared data
             accounts[userId] = {
                 password: password,
-                partner: partner
+                partner: partner,
+                data: null // will use shared data
             };
-            saveAccounts();
+            localStorage.setItem('roomAccounts_v3', JSON.stringify(accounts));
 
             createAccountMessage.textContent = '✅ Account created successfully! You can now login.';
             createAccountMessage.className = 'login-message success';
 
-            // Clear fields
             newUserId.value = '';
             newPassword.value = '';
             createAccountForm.style.display = 'none';
             loginFormContainer.style.display = 'block';
         }
 
-        // Logout function
         function logout() {
+            // Save current data before logout
+            if (currentUser) {
+                saveSharedData();
+            }
             currentUser = null;
             localStorage.removeItem('currentUser');
             loginUserId.value = '';
@@ -1392,16 +1728,11 @@
             updateLoginUI();
         }
 
-        // Event listeners for login
+        // ---------- Event listeners ----------
         loginBtn.addEventListener('click', login);
-        loginPassword.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') login();
-        });
-        loginUserId.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') login();
-        });
+        loginPassword.addEventListener('keypress', (e) => { if (e.key === 'Enter') login(); });
+        loginUserId.addEventListener('keypress', (e) => { if (e.key === 'Enter') login(); });
 
-        // Create account toggle
         createAccountBtn.addEventListener('click', () => {
             createAccountForm.style.display = 'block';
             createAccountMessage.textContent = '';
@@ -1415,74 +1746,10 @@
         });
 
         createAccountSubmitBtn.addEventListener('click', createAccount);
-        newPassword.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') createAccount();
-        });
-        newUserId.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') createAccount();
-        });
+        newPassword.addEventListener('keypress', (e) => { if (e.key === 'Enter') createAccount(); });
+        newUserId.addEventListener('keypress', (e) => { if (e.key === 'Enter') createAccount(); });
 
         logoutBtn.addEventListener('click', logout);
-
-        // ---------- DOM refs for main app ----------
-        const inputSuraj = document.getElementById('inputSuraj');
-        const inputSatyam = document.getElementById('inputSatyam');
-        const inputAyush = document.getElementById('inputAyush');
-        const updateBtn = document.getElementById('updateBtn');
-
-        const cardSuraj = document.getElementById('amountSuraj');
-        const cardSatyam = document.getElementById('amountSatyam');
-        const cardAyush = document.getElementById('amountAyush');
-
-        const listSuraj = document.getElementById('listAmountSuraj');
-        const listSatyam = document.getElementById('listAmountSatyam');
-        const listAyush = document.getElementById('listAmountAyush');
-
-        const totalBadge = document.getElementById('totalBadge');
-
-        // Products
-        const productNameInput = document.getElementById('productNameInput');
-        const productPriceInput = document.getElementById('productPriceInput');
-        const productBuyerInput = document.getElementById('productBuyerInput');
-        const addProductBtn = document.getElementById('addProductBtn');
-        const productListContainer = document.getElementById('productListContainer');
-        const totalProductsPriceSpan = document.getElementById('totalProductsPrice');
-
-        // Remaining
-        const remainValueSuraj = document.getElementById('remainValueSuraj');
-        const remainValueSatyam = document.getElementById('remainValueSatyam');
-        const remainValueAyush = document.getElementById('remainValueAyush');
-        const totalRemainingValue = document.getElementById('totalRemainingValue');
-
-        // Name elements
-        const nameDisplaySuraj = document.getElementById('nameDisplaySuraj');
-        const nameDisplaySatyam = document.getElementById('nameDisplaySatyam');
-        const nameDisplayAyush = document.getElementById('nameDisplayAyush');
-        const nameInputSuraj = document.getElementById('nameInputSuraj');
-        const nameInputSatyam = document.getElementById('nameInputSatyam');
-        const nameInputAyush = document.getElementById('nameInputAyush');
-        const listNameSuraj = document.getElementById('listNameSuraj');
-        const listNameSatyam = document.getElementById('listNameSatyam');
-        const listNameAyush = document.getElementById('listNameAyush');
-        const labelSuraj = document.getElementById('labelSuraj');
-        const labelSatyam = document.getElementById('labelSatyam');
-        const labelAyush = document.getElementById('labelAyush');
-        const remainLabelSuraj = document.getElementById('remainLabelSuraj');
-        const remainLabelSatyam = document.getElementById('remainLabelSatyam');
-        const remainLabelAyush = document.getElementById('remainLabelAyush');
-
-        // ---------- helpers ----------
-        function formatINR(num) {
-            return num.toLocaleString('en-IN');
-        }
-
-        function getContributions() {
-            return {
-                suraj: parseInt(inputSuraj.value) || 0,
-                satyam: parseInt(inputSatyam.value) || 0,
-                ayush: parseInt(inputAyush.value) || 0
-            };
-        }
 
         // ---------- Name editing ----------
         function setupNameEditing(target) {
@@ -1507,7 +1774,9 @@
                 display.textContent = newName;
                 display.style.display = 'inline';
                 input.style.display = 'none';
-                updateAllNames(target, newName);
+                sharedData.names[target] = newName;
+                updateAllNameRefs(target, newName);
+                scheduleSync();
             }
 
             input.addEventListener('blur', saveName);
@@ -1525,20 +1794,6 @@
 
         function capitalize(str) {
             return str.charAt(0).toUpperCase() + str.slice(1);
-        }
-
-        function updateAllNames(target, newName) {
-            const cap = capitalize(target);
-            document.getElementById(`listName${cap}`).textContent = newName;
-            document.getElementById(`label${cap}`).textContent = newName;
-            document.getElementById(`remainLabel${cap}`).innerHTML = `<i class="fas fa-user"></i> ${newName}`;
-            const options = document.querySelectorAll('#productBuyerInput option');
-            options.forEach(opt => {
-                if (opt.value === cap) {
-                    opt.textContent = newName;
-                }
-            });
-            renderProducts();
         }
 
         setupNameEditing('suraj');
@@ -1569,6 +1824,8 @@
                     if (fallback && fallback.classList.contains('fallback-icon')) {
                         fallback.style.display = 'none';
                     }
+                    sharedData.photos[target] = dataUrl;
+                    scheduleSync();
                 };
                 reader.readAsDataURL(file);
             });
@@ -1578,96 +1835,32 @@
         setupPhotoUpload('satyam');
         setupPhotoUpload('ayush');
 
-        // ---------- update contributions ----------
+        // ---------- Update contributions ----------
         function updateAll() {
             if (!currentUser) {
                 alert('Please login first to update contributions.');
                 return;
             }
-            const valSuraj = parseInt(inputSuraj.value) || 0;
-            const valSatyam = parseInt(inputSatyam.value) || 0;
-            const valAyush = parseInt(inputAyush.value) || 0;
-
-            cardSuraj.innerHTML = `<i class="fas fa-coins"></i> ₹ ${formatINR(valSuraj)}`;
-            cardSatyam.innerHTML = `<i class="fas fa-coins"></i> ₹ ${formatINR(valSatyam)}`;
-            cardAyush.innerHTML = `<i class="fas fa-coins"></i> ₹ ${formatINR(valAyush)}`;
-
-            listSuraj.innerHTML = `<i class="fas fa-rupee-sign"></i> ${formatINR(valSuraj)}`;
-            listSatyam.innerHTML = `<i class="fas fa-rupee-sign"></i> ${formatINR(valSatyam)}`;
-            listAyush.innerHTML = `<i class="fas fa-rupee-sign"></i> ${formatINR(valAyush)}`;
-
-            const total = valSuraj + valSatyam + valAyush;
-            totalBadge.innerHTML = `<i class="fas fa-calculator"></i> total ₹ ${formatINR(total)}`;
-
-            updateRemaining();
+            sharedData.contributions.suraj = parseInt(inputSuraj.value) || 0;
+            sharedData.contributions.satyam = parseInt(inputSatyam.value) || 0;
+            sharedData.contributions.ayush = parseInt(inputAyush.value) || 0;
+            refreshUI();
+            scheduleSync();
         }
 
-        // ---------- Products logic ----------
-        let products = [];
+        updateBtn.addEventListener('click', updateAll);
 
-        function getSpentByBuyer() {
-            const spent = { Suraj: 0, Satyam: 0, Ayush: 0 };
-            products.forEach(p => {
-                if (spent.hasOwnProperty(p.buyer)) {
-                    spent[p.buyer] += p.price;
+        const inputs = [inputSuraj, inputSatyam, inputAyush];
+        inputs.forEach(inp => {
+            inp.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    updateAll();
                 }
             });
-            return spent;
-        }
+        });
 
-        function renderProducts() {
-            if (products.length === 0) {
-                productListContainer.innerHTML =
-                    `<div class="empty-products"><i class="fas fa-box-open"></i> No products added yet. Add your first purchase!</div>`;
-                totalProductsPriceSpan.textContent = '₹ 0';
-                updateRemaining();
-                return;
-            }
-
-            let html = '';
-            let totalPrice = 0;
-            products.forEach((p, index) => {
-                totalPrice += p.price;
-                let buyerName = p.buyer;
-                if (p.buyer === 'Suraj') buyerName = nameDisplaySuraj.textContent;
-                else if (p.buyer === 'Satyam') buyerName = nameDisplaySatyam.textContent;
-                else if (p.buyer === 'Ayush') buyerName = nameDisplayAyush.textContent;
-
-                html += `
-                    <div class="product-item" data-index="${index}">
-                        <div class="product-info">
-                            <span class="product-name"><i class="fas fa-cube"></i> ${p.name}</span>
-                            <span class="product-price"><i class="fas fa-rupee-sign"></i> ${formatINR(p.price)}</span>
-                            <span class="product-buyer"><i class="fas fa-user"></i> ${buyerName}</span>
-                        </div>
-                        <div class="product-actions">
-                            <button class="btn-remove-product" data-index="${index}" title="Remove product"><i class="fas fa-trash-can"></i></button>
-                        </div>
-                    </div>
-                `;
-            });
-
-            productListContainer.innerHTML = html;
-            totalProductsPriceSpan.textContent = `₹ ${formatINR(totalPrice)}`;
-
-            document.querySelectorAll('.btn-remove-product').forEach(btn => {
-                btn.addEventListener('click', function(e) {
-                    if (!currentUser) {
-                        alert('Please login first to remove products.');
-                        return;
-                    }
-                    const idx = parseInt(this.getAttribute('data-index'));
-                    if (!isNaN(idx)) {
-                        products.splice(idx, 1);
-                        renderProducts();
-                        updateRemaining();
-                    }
-                });
-            });
-
-            updateRemaining();
-        }
-
+        // ---------- Add product ----------
         function addProduct() {
             if (!currentUser) {
                 alert('Please login first to add products.');
@@ -1686,51 +1879,14 @@
                 return;
             }
 
-            products.push({ name, price, buyer });
-            renderProducts();
+            sharedData.products.push({ name, price, buyer });
+            refreshUI();
+            scheduleSync();
 
             productNameInput.value = '';
             productPriceInput.value = '';
             productNameInput.focus();
         }
-
-        // ---------- REMAINING LOGIC ----------
-        function updateRemaining() {
-            const contrib = getContributions();
-            const spent = getSpentByBuyer();
-
-            const remainSuraj = contrib.suraj - spent.Suraj;
-            const remainSatyam = contrib.satyam - spent.Satyam;
-            const remainAyush = contrib.ayush - spent.Ayush;
-
-            function setRemainingValue(element, amount) {
-                const isPositive = amount >= 0;
-                element.className = `value ${isPositive ? 'positive' : 'negative'}`;
-                element.innerHTML = `<i class="fas fa-rupee-sign"></i> ${formatINR(amount)}`;
-            }
-
-            setRemainingValue(remainValueSuraj, remainSuraj);
-            setRemainingValue(remainValueSatyam, remainSatyam);
-            setRemainingValue(remainValueAyush, remainAyush);
-
-            const totalRemain = remainSuraj + remainSatyam + remainAyush;
-            totalRemainingValue.innerHTML = `<i class="fas fa-rupee-sign"></i> ${formatINR(totalRemain)}`;
-            totalRemainingValue.className = `value ${totalRemain >= 0 ? 'positive' : 'negative'}`;
-            totalRemainingValue.style.color = totalRemain >= 0 ? '#ffffff' : '#ffcccc';
-        }
-
-        // ---------- event listeners ----------
-        updateBtn.addEventListener('click', updateAll);
-
-        const inputs = [inputSuraj, inputSatyam, inputAyush];
-        inputs.forEach(inp => {
-            inp.addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') {
-                    e.preventDefault();
-                    updateAll();
-                }
-            });
-        });
 
         addProductBtn.addEventListener('click', addProduct);
         productNameInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') { e.preventDefault();
@@ -1738,30 +1894,59 @@
         productPriceInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') { e.preventDefault();
                 addProduct(); } });
 
-        // ---------- initial sync ----------
-        function syncInputsFromDisplay() {
-            function extractNumberFromCard(cardEl) {
-                const txt = cardEl.textContent.replace(/[₹,]/g, '').trim();
-                return parseInt(txt) || 0;
+        // ---------- Poll for external changes (multi-device sync) ----------
+        function checkForExternalChanges() {
+            const stored = localStorage.getItem(STORAGE_KEY);
+            if (stored && stored !== lastSyncData) {
+                try {
+                    const parsed = JSON.parse(stored);
+                    // Merge changes from other devices
+                    sharedData.contributions = parsed.contributions || sharedData.contributions;
+                    sharedData.names = parsed.names || sharedData.names;
+                    sharedData.products = parsed.products || sharedData.products;
+                    sharedData.photos = parsed.photos || {};
+                    lastSyncData = stored;
+                    applySharedData();
+                    updateSyncStatus('synced');
+                } catch (e) {
+                    console.warn('Failed to parse external changes');
+                }
             }
-            inputSuraj.value = extractNumberFromCard(cardSuraj);
-            inputSatyam.value = extractNumberFromCard(cardSatyam);
-            inputAyush.value = extractNumberFromCard(cardAyush);
         }
-        syncInputsFromDisplay();
-        updateAll();
 
-        // ---------- pre-populate with sample products ----------
-        products = [
-            { name: 'Groceries', price: 1200, buyer: 'Suraj' },
-            { name: 'Electricity bill', price: 850, buyer: 'Satyam' },
-            { name: 'WiFi recharge', price: 600, buyer: 'Ayush' }
-        ];
-        renderProducts();
-        updateRemaining();
+        // Check every 5 seconds for changes from other devices/tabs
+        setInterval(checkForExternalChanges, 5000);
 
-        // ---------- Initialize login UI ----------
-        updateLoginUI();
+        // Also listen for storage events from other tabs
+        window.addEventListener('storage', function(e) {
+            if (e.key === STORAGE_KEY) {
+                checkForExternalChanges();
+            }
+        });
+
+        // ---------- Save on page unload ----------
+        window.addEventListener('beforeunload', function() {
+            if (currentUser) {
+                saveSharedData();
+            }
+        });
+
+        // ---------- Initialize ----------
+        // Load shared data first
+        loadSharedData();
+
+        if (currentUser && accounts[currentUser]) {
+            updateLoginUI();
+        } else {
+            currentUser = null;
+            localStorage.removeItem('currentUser');
+            updateLoginUI();
+            // Show default data
+            applySharedData();
+        }
+
+        // Update sync status initially
+        updateSyncStatus('synced');
 
     })();
 </script>
